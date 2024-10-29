@@ -22,7 +22,27 @@ public class cliente {
         this.listaMascotas = listaMascotas;
     }
 
-    public int getIdCliente() {
+    public cliente(int int1, String string, String string2, String string3, String string4, String string5) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getContacto() {
+		return contacto;
+	}
+
+	public void setContacto(String contacto) {
+		this.contacto = contacto;
+	}
+
+	public int getIdCliente() {
         return idCliente;
     }
 

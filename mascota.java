@@ -12,7 +12,7 @@ public class mascota {
 	    private String patologias;
 	    private String observaciones;
 
-	    // Constructor, getters y setters
+	   
 	    public mascota(int idMascota, String nombre, int edad, String raza, String comportamiento, double peso, double altura, String patologias, String observaciones) {
 	        this.idMascota = idMascota;
 	        this.nombre = nombre;
@@ -25,7 +25,7 @@ public class mascota {
 	        this.observaciones = observaciones;
 	    }
 
-	    // Getters y setters
+	    
 	    public int getIdMascota() {
 	        return idMascota;
 	    }

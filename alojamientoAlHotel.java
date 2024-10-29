@@ -70,7 +70,7 @@ public class alojamientoAlHotel {
         this.disponible = (mascotaAlojada == null); // Si hay mascota, no está disponible
     }
 
-    // Metodos adicionales
+    
     public void liberarAlojamiento() {
         this.mascotaAlojada = null;
         this.disponible = true;

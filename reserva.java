@@ -2,44 +2,40 @@ package petPals;
 
 public class reserva {
 
-	 private int idReserva;
-	    private String fechaReserva;
-	    private String estado;
+	private int idMascota;
+    private String fechaEntrada;
+    private String fechaSalida;
 
-	    
-	    public reserva(int idReserva, String fechaReserva, String estado) {
-	        this.idReserva = idReserva;
-	        this.fechaReserva = fechaReserva;
-	        this.estado = estado;
-	    }
+    
 
-	    public int getIdReserva() {
-	        return idReserva;
-	    }
+    public reserva(int idMascota, String fechaEntrada, String fechaSalida) {
+		super();
+		this.idMascota = idMascota;
+		this.fechaEntrada = fechaEntrada;
+		this.fechaSalida = fechaSalida;
+	}
 
-	    public void setIdReserva(int idReserva) {
-	        this.idReserva = idReserva;
-	    }
+	public int getIdMascota() {
+        return idMascota;
+    }
 
-	    public String getFechaReserva() {
-	        return fechaReserva;
-	    }
+    public void setIdMascota(int idMascota) {
+        this.idMascota = idMascota;
+    }
 
-	    public void setFechaReserva(String fechaReserva) {
-	        this.fechaReserva = fechaReserva;
-	    }
+    public String getFechaEntrada() {
+        return fechaEntrada;
+    }
 
-	    public String getEstado() {
-	        return estado;
-	    }
+    public void setFechaEntrada(String fechaEntrada) {
+        this.fechaEntrada = fechaEntrada;
+    }
 
-	    public void setEstado(String estado) {
-	        this.estado = estado;
-	    }
+    public String getFechaSalida() {
+        return fechaSalida;
+    }
 
-	    // Metodos adicionales
-	    public void verDetalleReserva() {
-	        
-	    }
-	
+    public void setFechaSalida(String fechaSalida) {
+        this.fechaSalida = fechaSalida;
+    }
 }

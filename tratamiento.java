@@ -10,7 +10,7 @@ public class tratamiento {
 	    private String fechaInicio;
 	    private String fechaFin;
 
-	    // Constructor, getters y setters
+	    
 	    public tratamiento(int idTratamiento, String descripcion, String medicamentos, String dosis, String frecuencia, String fechaInicio, String fechaFin) {
 	        this.idTratamiento = idTratamiento;
 	        this.descripcion = descripcion;

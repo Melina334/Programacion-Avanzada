@@ -2,90 +2,44 @@ package petPals;
 
 import javax.swing.JOptionPane;
 
-public class empleado extends usuario{
+import controller.empleadoController;
 
-	private String nombre;
-	private String contacto;
-	private int idEmpleado;
-	private String cargo;
-	private String sucursal;
+public class empleado extends usuario {
 
-	 public empleado(String mail, String contraseña, String rol, String nombre, String contacto, int idEmpleado, String cargo, String sucursal) {
-	        super(mail, contraseña, rol); 
-	        this.nombre = nombre;
-	        this.contacto = contacto;
-	        this.idEmpleado = idEmpleado;
-	        this.cargo = cargo;
-	        this.sucursal = sucursal;
-	    }
-
-	    // Getters y setters
-	    public String getNombre() {
-	        return nombre;
-	    }
-
-	    public void setNombre(String nombre) {
-	        this.nombre = nombre;
-	    }
-
-	    public String getContacto() {
-	        return contacto;
-	    }
-
-	    public void setContacto(String contacto) {
-	        this.contacto = contacto;
-	    }
-
-	    public int getIdEmpleado() {
-	        return idEmpleado;
-	    }
-
-	    public void setIdEmpleado(int idEmpleado) {
-	        this.idEmpleado = idEmpleado;
-	    }
-
-	    public String getCargo() {
-	        return cargo;
-	    }
-
-	    public void setCargo(String cargo) {
-	        this.cargo = cargo;
-	    }
-
-	    public String getSucursal() {
-	        return sucursal;
-	    }
-
-	    public void setSucursal(String sucursal) {
-	        this.sucursal = sucursal;
-	    }
-
-	    @Override
-	    public String toString() {
-	        return "Empleado [nombre=" + nombre + ", contacto=" + contacto + ", idEmpleado=" + idEmpleado + 
-	               ", cargo=" + cargo + ", sucursal=" + sucursal + "]";
-	    }
-	    public void menu() {
-	        String[] opciones = {"Registrar llegada de mascota", "Generar factura", "Ver reservas"};
-	        String opcion = (String) JOptionPane.showInputDialog(null, "Menú Empleado",
-	                "Seleccione una opción", JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
-	        
-	        switch (opcion) {
-	            case "Registrar llegada de mascota":
-	                JOptionPane.showMessageDialog(null, "Registrando llegada de mascota...");
-	             
-	                break;
-	            case "Generar factura":
-	                JOptionPane.showMessageDialog(null, "Generando factura...");
-	             
-	                break;
-	            case "Ver reservas":
-	                JOptionPane.showMessageDialog(null, "Mostrando reservas...");
-	               
-	                break;
-	            default:
-	                JOptionPane.showMessageDialog(null, "Opción no válida.");
-	        }
-	    }
+	public empleado(String string, String string2, String string3, String string4) {
+		super(string, string2, string3, string4);
+		// TODO Auto-generated constructor stub
 	}
 
+	public void menu() {
+		String[] opciones = { "Registrar mascota", "Ver mascotas registradas", "Generar factura",
+				"Reservar alojamiento", "Dar turno a mascota" };
+		String opcion = (String) JOptionPane.showInputDialog(null, "Menú Empleado", "Seleccione una opción",
+				JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+
+		switch (opcion) {
+		case "Registrar mascota":
+			empleadoController.registrarMascota();
+			 break;
+
+		case "Ver mascotas registradas":
+            empleadoController.verMascotasRegistradas();
+			break;
+
+		case "Generar factura":
+			JOptionPane.showMessageDialog(null, "Generando factura...");
+			break;
+
+		case "Reservar alojamiento":
+            empleadoController.darAlojamiento();
+			break;
+
+		case "Dar turno a mascota":
+			JOptionPane.showMessageDialog(null, "Generando factura...");
+			break;
+
+		default:
+			JOptionPane.showMessageDialog(null, "Opción no válida.");
+		}
+	}
+}
