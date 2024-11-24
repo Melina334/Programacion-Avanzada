@@ -1,8 +1,8 @@
-package petPals;
+package GUI;
 
 import javax.swing.JOptionPane;
 
-import controller.empleadoController;
+import DLL.empleadoController;
 
 public class empleado extends usuario {
 
@@ -11,35 +11,38 @@ public class empleado extends usuario {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void menu() {
-		String[] opciones = { "Registrar mascota", "Ver mascotas registradas", "Generar factura",
-				"Reservar alojamiento", "Dar turno a mascota" };
-		String opcion = (String) JOptionPane.showInputDialog(null, "Menú Empleado", "Seleccione una opción",
-				JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+	 // Método `menu()` ya no es necesario y se puede eliminar o comentar.
+    /*
+    public void menu() {
+        String[] opciones = { "Registrar mascota", "Ver mascotas registradas", "Generar factura",
+                "Reservar alojamiento", "Dar turno a mascota" };
+        String opcion = (String) JOptionPane.showInputDialog(null, "Menú Empleado", "Seleccione una opción",
+                JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
 
-		switch (opcion) {
-		case "Registrar mascota":
-			empleadoController.registrarMascota();
-			 break;
+        switch (opcion) {
+        case "Registrar mascota":
+            empleadoController.registrarMascota();
+            break;
 
-		case "Ver mascotas registradas":
+        case "Ver mascotas registradas":
             empleadoController.verMascotasRegistradas();
-			break;
+            break;
 
-		case "Generar factura":
-			JOptionPane.showMessageDialog(null, "Generando factura...");
-			break;
+        case "Generar factura":
+            JOptionPane.showMessageDialog(null, "Generando factura...");
+            break;
 
-		case "Reservar alojamiento":
+        case "Reservar alojamiento":
             empleadoController.darAlojamiento();
-			break;
+            break;
 
-		case "Dar turno a mascota":
-			JOptionPane.showMessageDialog(null, "Generando factura...");
-			break;
+        case "Dar turno a mascota":
+            JOptionPane.showMessageDialog(null, "Generando factura...");
+            break;
 
-		default:
-			JOptionPane.showMessageDialog(null, "Opción no válida.");
-		}
-	}
+        default:
+            JOptionPane.showMessageDialog(null, "Opción no válida.");
+        }
+    }
+    */
 }

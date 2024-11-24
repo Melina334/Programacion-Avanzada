@@ -1,4 +1,4 @@
-package controller;
+package DLL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,8 +10,8 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import petPals.administrador;
-import petPals.conexion;
+import BLL.conexion;
+import GUI.administrador;
 
 public class administradorController {
 

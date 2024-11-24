@@ -1,4 +1,4 @@
-package controller;
+package DLL;
 
 import java.sql.Connection;
 
@@ -6,11 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import petPals.conexion;
 
 import javax.swing.JOptionPane;
 
-import petPals.usuario;
+import BLL.conexion;
+import GUI.usuario;
 
 public class usuarioController {
 

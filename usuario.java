@@ -1,4 +1,4 @@
-package petPals;
+package GUI;
 
 public class usuario {
 

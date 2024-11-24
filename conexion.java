@@ -1,4 +1,4 @@
-package petPals;
+package BLL;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;

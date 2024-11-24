@@ -1,4 +1,4 @@
-package petPals;
+package BLL;
 
 import java.util.List;
 

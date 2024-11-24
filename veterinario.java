@@ -1,4 +1,4 @@
-package petPals;
+package GUI;
 
 import javax.swing.JOptionPane;
 

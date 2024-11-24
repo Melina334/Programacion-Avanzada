@@ -1,4 +1,4 @@
-package controller;
+package DLL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,46 +9,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
-import petPals.conexion;
-import petPals.empleado;
-import petPals.mascota;
-import petPals.reserva;
+import BLL.conexion;
+import BLL.mascota;
+import GUI.empleado;
+import GUI.reserva;
 
 public class empleadoController {
 
 	private static Connection con = conexion.getInstance().getConection();
 	
 
-	 public static void registrarMascota() {
-	        try {
-	           
-                String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la mascota:");
-	            int edad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la edad de la mascota:"));
-	            String raza = JOptionPane.showInputDialog("Ingrese la raza de la mascota:");
-	            String comportamiento = JOptionPane.showInputDialog("Ingrese el comportamiento de la mascota:");
-	            double peso = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el peso de la mascota (kg):"));
-	            double altura = Double.parseDouble(JOptionPane.showInputDialog("Ingrese la altura de la mascota (cm):"));
-	            String patologias = JOptionPane.showInputDialog("Ingrese las patologías de la mascota (si no tiene, deje en blanco):");
-	            String observaciones = JOptionPane.showInputDialog("Ingrese observaciones sobre la mascota:");
+	public static void registrarMascota(String nombre, int edad, String raza, String comportamiento, double peso, double altura, String patologias, String observaciones) {
+	    try {
+	        mascota nuevaMascota = new mascota(0, nombre, edad, raza, comportamiento, peso, altura, patologias, observaciones);
 
-	   
-	            mascota nuevaMascota = new mascota(0, nombre, edad, raza, comportamiento, peso, altura, patologias, observaciones);
-
-	            // Guardar la mascota en la base de datos
-	            if (guardarMascota(nuevaMascota)) {
-	                JOptionPane.showMessageDialog(null, "Mascota registrada con éxito.");
-	            } else {
-	                JOptionPane.showMessageDialog(null, "No se pudo registrar la mascota.");
-	            }
-
-	        } catch (NumberFormatException e) {
-	            JOptionPane.showMessageDialog(null, "Error en la entrada de datos. Asegúrese de ingresar números donde corresponda.");
-	        } catch (Exception e) {
-	            JOptionPane.showMessageDialog(null, "Ocurrió un error: " + e.getMessage());
+	        // Guardar la mascota en la base de datos
+	        if (guardarMascota(nuevaMascota)) {
+	            JOptionPane.showMessageDialog(null, "Mascota registrada con éxito.");
+	        } else {
+	            JOptionPane.showMessageDialog(null, "No se pudo registrar la mascota.");
 	        }
-	    }
 
+	    } catch (NumberFormatException e) {
+	        JOptionPane.showMessageDialog(null, "Error en la entrada de datos. Asegúrese de ingresar números donde corresponda.");
+	    } catch (Exception e) {
+	        JOptionPane.showMessageDialog(null, "Ocurrió un error: " + e.getMessage());
+	    }
+	}
 	    private static boolean guardarMascota(mascota nuevaMascota) {
 	        String sql = "INSERT INTO mascotas (nombre, edad, raza, comportamiento, peso, altura, patologias, observaciones) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	        try (PreparedStatement statement = con.prepareStatement(sql)) {
@@ -106,7 +95,7 @@ public class empleadoController {
 	    }
 
 	    
-	    private static mascota buscarMascotaPorId(int id) {
+	    public static mascota buscarMascotaPorId(int id) {
 	        mascota mascotaEncontrada = null;
 	        String sql = "SELECT * FROM mascotas WHERE idMascota = ?";
 
@@ -153,8 +142,8 @@ public class empleadoController {
 	        }
 	    }
 	    
-	    public static void verMascotasRegistradas() {
-	        StringBuilder listado = new StringBuilder("Lista de Mascotas Registradas:\n");
+	    public static List<String> verMascotasRegistradas() {
+	        List<String> listado = new ArrayList<>();
 
 	        String sql = "SELECT idMascota, nombre, edad, raza, comportamiento, peso, altura FROM mascotas";
 
@@ -162,12 +151,10 @@ public class empleadoController {
 	             ResultSet resultSet = statement.executeQuery()) {
 
 	            if (!resultSet.isBeforeFirst()) {
-	           
-	                JOptionPane.showMessageDialog(null, "No hay mascotas registradas.");
-	                return;
+	                listado.add("No hay mascotas registradas.");
+	                return listado;
 	            }
 
-	            
 	            while (resultSet.next()) {
 	                int id = resultSet.getInt("idMascota");
 	                String nombre = resultSet.getString("nombre");
@@ -177,38 +164,67 @@ public class empleadoController {
 	                double peso = resultSet.getDouble("peso");
 	                double altura = resultSet.getDouble("altura");
 
-	       
-	                listado.append("ID: ").append(id).append("\n")
-	                       .append("Nombre: ").append(nombre).append("\n")
-	                       .append("Edad: ").append(edad).append("\n")
-	                       .append("Raza: ").append(raza).append("\n")
-	                       .append("Comportamiento: ").append(comportamiento).append("\n")
-	                       .append("Peso: ").append(peso).append(" kg\n")
-	                       .append("Altura: ").append(altura).append(" m\n")
-	                       .append("-------------------------------\n");
+	                // Formato de la mascota
+	                listado.add("ID: " + id);
+	                listado.add("Nombre: " + nombre);
+	                listado.add("Edad: " + edad);
+	                listado.add("Raza: " + raza);
+	                listado.add("Comportamiento: " + comportamiento);
+	                listado.add("Peso: " + peso + " kg");
+	                listado.add("Altura: " + altura + " m");
+	                listado.add("-------------------------------");
 	            }
-
-	         
-	            JOptionPane.showMessageDialog(null, listado.toString());
 
 	        } catch (SQLException e) {
 	            e.printStackTrace();
-	            JOptionPane.showMessageDialog(null, "Error al obtener la lista de mascotas: " + e.getMessage());
+	            listado.add("Error al obtener la lista de mascotas: " + e.getMessage());
 	        }
+
+	        return listado;  // Devuelve la lista de mascotas
+	    }
+	
+	   
+	    
+	
+	   
+
+	     public static List<mascota> obtenerMascotas() {
+	        List<mascota> listaMascotas = new ArrayList<>();
+	        String sql = "SELECT idMascota, nombre FROM mascotas";
+
+	        try (PreparedStatement statement = con.prepareStatement(sql);
+	             ResultSet resultSet = statement.executeQuery()) {
+
+	            while (resultSet.next()) {
+	                mascota m = new mascota(0, sql, 0, sql, sql, 0, 0, sql, sql);
+	                m.setIdMascota(resultSet.getInt("idMascota"));
+	                m.setNombre(resultSet.getString("nombre"));
+	                listaMascotas.add(m);
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            JOptionPane.showMessageDialog(null, "Error al obtener mascotas: " + e.getMessage());
+	        }
+
+	        return listaMascotas;
 	    }
 
-    public static boolean generarFactura(String nombreMascota, String monto) {
-        String sql = "INSERT INTO factura (nombre_mascota, monto) VALUES (?, ?)";
-        try (PreparedStatement statement = con.prepareStatement(sql)) {
-            statement.setString(1, nombreMascota);
-            statement.setString(2, monto);
-            int filas = statement.executeUpdate();
-            return filas > 0; 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error al generar factura: " + e.getMessage());
-            return false;
-        }
-    }
+	     public static boolean generarFactura(int idMascota, String servicio, double monto) {
+	    	    String sql = "INSERT INTO facturas (idMascota, servicio, monto) VALUES (?, ?, ?)";
+	    	    try (PreparedStatement statement = con.prepareStatement(sql)) {
+	    	        statement.setInt(1, idMascota);
+	    	        statement.setString(2, servicio);
+	    	        statement.setDouble(3, monto);
+	    	        int filas = statement.executeUpdate();
+	    	        return filas > 0;
+	    	    } catch (SQLException e) {
+	    	        e.printStackTrace();
+	    	        JOptionPane.showMessageDialog(null, "Error al generar factura: " + e.getMessage());
+	    	        return false;
+	    	    }
+	    	}
+	
 }
+    
+
 

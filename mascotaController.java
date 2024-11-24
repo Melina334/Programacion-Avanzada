@@ -1,9 +1,11 @@
-package controller;
+package DLL;
 
-import petPals.conexion;
-import petPals.mascota;
 import java.util.ArrayList;
 import java.util.List;
+
+import BLL.conexion;
+import BLL.mascota;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

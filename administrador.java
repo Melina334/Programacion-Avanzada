@@ -1,8 +1,8 @@
-package petPals;
+package GUI;
 
 import javax.swing.JOptionPane;
 
-import controller.usuarioController;
+import DLL.usuarioController;
 
 public class administrador extends usuario {
 
