@@ -1,6 +1,7 @@
 package DLL;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -59,40 +60,23 @@ public class empleadoController {
 	        }
 	    }
 	
+	    public static boolean darAlojamiento(int idMascota, String fechaEntrada, String fechaSalida) {
+	        // SQL para insertar una nueva reserva de alojamiento
+	        String sql = "INSERT INTO reservas (idMascota, fechaEntrada, fechaSalida) VALUES (?, ?, ?)";
 
-	    public static void darAlojamiento() {
-	        String idInput = JOptionPane.showInputDialog("Ingrese el ID de la mascota:");
-            try {
-	            int idMascota = Integer.parseInt(idInput);
+	        try (PreparedStatement statement = con.prepareStatement(sql)) {
+	            statement.setInt(1, idMascota);
+	            statement.setString(2, fechaEntrada);
+	            statement.setString(3, fechaSalida);
 
-	            mascota mascota = buscarMascotaPorId(idMascota); 
-
-	            if (mascota == null) {
-	                JOptionPane.showMessageDialog(null, "Mascota no encontrada.");
-	                return;
-	            }
-                String fechaEntrada = JOptionPane.showInputDialog("Ingrese la fecha de entrada (yyyy-MM-dd):");
-	            String fechaSalida = JOptionPane.showInputDialog("Ingrese la fecha de salida (yyyy-MM-dd):");
-	            
-	           
-	            if (fechaEntrada.isEmpty() || fechaSalida.isEmpty()) {
-	                JOptionPane.showMessageDialog(null, "Las fechas no pueden estar vacías.");
-	                return;
-	            }
-                reserva nuevaReserva = new reserva(mascota.getIdMascota(), fechaEntrada, fechaSalida);
-	            
-	           
-	            if (guardarReserva(nuevaReserva)) {
-	                JOptionPane.showMessageDialog(null, "Alojamiento asignado exitosamente.");
-	            } else {
-	                JOptionPane.showMessageDialog(null, "Error al asignar el alojamiento.");
-	            }
-	        } catch (NumberFormatException e) {
-	            JOptionPane.showMessageDialog(null, "ID inválido. Debe ingresar un número.");
-	        } catch (Exception e) {
-	            JOptionPane.showMessageDialog(null, "Ocurrió un error: " + e.getMessage());
+	            int filasAfectadas = statement.executeUpdate();
+	            return filasAfectadas > 0;
+	        } catch (SQLException e) {
+	            System.err.println("Error al asignar alojamiento: " + e.getMessage());
+	            return false;
 	        }
 	    }
+	
 
 	    
 	    public static mascota buscarMascotaPorId(int id) {
@@ -126,7 +110,7 @@ public class empleadoController {
 	    }
 
 	
-	    private static boolean guardarReserva(reserva reserva) {
+	    public static boolean guardarReserva(reserva reserva) {
 	        String sql = "INSERT INTO reservas (idMascota, fechaEntrada, fechaSalida) VALUES (?, ?, ?)";
 	        try (PreparedStatement statement = con.prepareStatement(sql)) {
 	            statement.setInt(1, reserva.getIdMascota());
@@ -188,13 +172,12 @@ public class empleadoController {
 	
 	   
 
-	     public static List<mascota> obtenerMascotas() {
+	    public static List<mascota> obtenerMascotas() {
 	        List<mascota> listaMascotas = new ArrayList<>();
 	        String sql = "SELECT idMascota, nombre FROM mascotas";
 
 	        try (PreparedStatement statement = con.prepareStatement(sql);
 	             ResultSet resultSet = statement.executeQuery()) {
-
 	            while (resultSet.next()) {
 	                mascota m = new mascota(0, sql, 0, sql, sql, 0, 0, sql, sql);
 	                m.setIdMascota(resultSet.getInt("idMascota"));
@@ -202,29 +185,62 @@ public class empleadoController {
 	                listaMascotas.add(m);
 	            }
 	        } catch (SQLException e) {
-	            e.printStackTrace();
 	            JOptionPane.showMessageDialog(null, "Error al obtener mascotas: " + e.getMessage());
 	        }
 
 	        return listaMascotas;
 	    }
 
-	     public static boolean generarFactura(int idMascota, String servicio, double monto) {
-	    	    String sql = "INSERT INTO facturas (idMascota, servicio, monto) VALUES (?, ?, ?)";
-	    	    try (PreparedStatement statement = con.prepareStatement(sql)) {
-	    	        statement.setInt(1, idMascota);
-	    	        statement.setString(2, servicio);
-	    	        statement.setDouble(3, monto);
-	    	        int filas = statement.executeUpdate();
-	    	        return filas > 0;
-	    	    } catch (SQLException e) {
-	    	        e.printStackTrace();
-	    	        JOptionPane.showMessageDialog(null, "Error al generar factura: " + e.getMessage());
-	    	        return false;
-	    	    }
-	    	}
-	
-}
-    
+	    public static boolean generarFactura(int idMascota, Date fecha, double total, String estado, String servicio) {
+	        // SQL ajustado para manejar los campos de la tabla
+	        String sql = "INSERT INTO facturas (idMascota, fecha, total, estado, servicio) " +
+	                     "VALUES (?, ?, ?, ?, ?)";  // Aquí hay 5 parámetros
 
+	        try (PreparedStatement statement = con.prepareStatement(sql)) {
+	            // Establecer los parámetros
+	            statement.setInt(1, idMascota);  // Para el idMascota
+	            statement.setDate(2, fecha);      // Para la fecha
+	            statement.setDouble(3, total);    // Para el total
+	            statement.setString(4, estado);   // Para el estado (pendiente, pagado, etc.)
+	            statement.setString(5, servicio); // Para el servicio
+
+	            // Ejecutar la consulta de inserción
+	            return statement.executeUpdate() > 0;  // Si se insertó, retorna true
+	        } catch (SQLException e) {
+	            JOptionPane.showMessageDialog(null, "Error al generar factura: " + e.getMessage());
+	            return false;  // En caso de error, retorna false
+	        }
+	    }
+	    public static boolean darTurno(int idMascota, Date fechaTurno, String servicio) {
+	        String sql = "INSERT INTO turnos (idMascota, fechaTurno, servicio) VALUES (?, ?, ?)";
+	        try (PreparedStatement ps = con.prepareStatement(sql)) {
+	            ps.setInt(1, idMascota);
+	            ps.setDate(2, fechaTurno);
+	            ps.setString(3, servicio);
+	            return ps.executeUpdate() > 0;
+	        } catch (SQLException e) {
+	            JOptionPane.showMessageDialog(null, "Error al asignar turno: " + e.getMessage());
+	            return false;
+	        }
+	    }
+
+	  
+
+	    public static mascota buscarMascotaPorNombre(String nombre) {
+	        String sql = "SELECT * FROM mascotas WHERE nombre = ?";
+	        try (PreparedStatement ps = con.prepareStatement(sql)) {
+	            ps.setString(1, nombre);
+	            ResultSet rs = ps.executeQuery();
+	            if (rs.next()) {
+	                return new mascota(rs.getInt("idMascota"), rs.getString("nombre"), 0, sql, sql, 0, 0, sql, sql);
+	            }
+	        } catch (SQLException e) {
+	            JOptionPane.showMessageDialog(null, "Error al buscar mascota: " + e.getMessage());
+	        }
+	        return null;
+	    }
+	    
+	    
+	    
+}
 

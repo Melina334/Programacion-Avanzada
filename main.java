@@ -27,14 +27,14 @@ public class main {
         
         switch (usuario.getRol().toLowerCase()) {
             case "administrador":
-                // Crear una instancia de administrador y mostrar su menú
-                administrador admin = new administrador(
-                    usuario.getMail(),
-                    usuario.getContraseña(),
-                    usuario.getRol(),
-                    usuario.getNombre()
-                );
-                admin.menu(usuario);
+            	 EventQueue.invokeLater(() -> {
+            	        try {
+            	            MenuAdministrador menuAdmin = new MenuAdministrador(); // Crear la instancia del menú
+            	            menuAdmin.setVisible(true); // Hacer visible la interfaz gráfica
+            	        } catch (Exception e) {
+            	            e.printStackTrace();
+            	        }
+            	    });
                 break;
 
             case "empleado":
@@ -50,14 +50,14 @@ public class main {
                 break;
 
             case "veterinario":
-                // Crear una instancia de veterinario y mostrar su menú
-                veterinario vet = new veterinario(
-                    usuario.getMail(),
-                    usuario.getContraseña(),
-                    usuario.getRol(),
-                    usuario.getNombre()
-                );
-                vet.menu();
+            	EventQueue.invokeLater(() -> {
+                    try {
+                        MenuVeterinaria menuVeterinaria = new MenuVeterinaria();
+                        menuVeterinaria.setVisible(true);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
                 break;
 
             default:

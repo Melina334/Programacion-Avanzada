@@ -13,7 +13,8 @@ public class veterinario extends usuario {
 		// TODO Auto-generated constructor stub
 	}
 
-	// Metodo del menu del veterinario
+    /*
+	 Metodo del menu del veterinario
     public void menu() {
         String[] opciones = {"Registrar consulta", "Editar consulta", "Generar reporte médico"};
         String opcion = (String) JOptionPane.showInputDialog(null, "Menú Veterinario",
@@ -23,11 +24,7 @@ public class veterinario extends usuario {
             case "Atender mascota":
                 JOptionPane.showMessageDialog(null, "Registrando consulta médica...");
                 
-                break;
-            case "realizar servicio de peluqueria":
-                JOptionPane.showMessageDialog(null, "Editando consulta...");
-
-                break;
+               break;
             case "Generar reporte medico":
                 JOptionPane.showMessageDialog(null, "Generando reporte médico...");
                 
@@ -36,4 +33,5 @@ public class veterinario extends usuario {
                 JOptionPane.showMessageDialog(null, "Opción no válida.");
         }
     }
+    */
 }

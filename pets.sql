@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-10-2024 a las 15:37:44
+-- Tiempo de generación: 25-11-2024 a las 19:19:33
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -34,6 +34,19 @@ CREATE TABLE `clientes` (
   `direccion` varchar(255) DEFAULT NULL,
   `telefono` varchar(20) DEFAULT NULL,
   `correo` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `consulta`
+--
+
+CREATE TABLE `consulta` (
+  `id` int(11) NOT NULL,
+  `idMascota` int(11) NOT NULL,
+  `servicio` varchar(255) NOT NULL,
+  `fecha` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -75,8 +88,19 @@ CREATE TABLE `facturas` (
   `idFactura` int(11) NOT NULL,
   `fecha` date NOT NULL,
   `total` double NOT NULL,
-  `estado` varchar(50) NOT NULL
+  `estado` varchar(50) NOT NULL,
+  `idMascota` int(11) NOT NULL,
+  `servicio` varchar(19) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `facturas`
+--
+
+INSERT INTO `facturas` (`idFactura`, `fecha`, `total`, `estado`, `idMascota`, `servicio`) VALUES
+(1, '2024-10-07', 10, 'pendiente', 1, 'alojamiento'),
+(2, '2024-07-11', 10, 'pendiente', 1, 'peluqieria'),
+(3, '2025-10-06', 1000, 'pagado', 8, 'alojamiento');
 
 -- --------------------------------------------------------
 
@@ -101,7 +125,26 @@ CREATE TABLE `mascotas` (
 --
 
 INSERT INTO `mascotas` (`idMascota`, `nombre`, `edad`, `raza`, `comportamiento`, `peso`, `altura`, `patologias`, `observaciones`) VALUES
-(1, 'puli', 22, 'caniche', 'bueno', 20, 12, 'ninguna', 'come cada 3 horas');
+(1, 'puli', 22, 'caniche', 'bueno', 20, 12, 'ninguna', 'come cada 3 horas'),
+(2, 'luly', 10, 'labrador', 'bueno', 10, 15, 'ninguna', 'ninguna'),
+(3, 'limon', 10, 'charles', 'bueno', 15, 12, 'ninguna', 'ninguna'),
+(4, 'sweet', 11, 'cocker', 'bueno', 17, 15, 'niguna', 'no come balanceado'),
+(5, 'pachita', 52, 'vhbfuivb', 'bueno', 15, 15, 'vjbbbfb', 'bfbgbs'),
+(6, 'gachi', 10, 'salchicha', 'bueno', 10, 2, 'nignuna', 'ninguno'),
+(7, 'maguilulu', 15, 'caniche', 'bueno pero muerde', 10, 10, 'ninguna', 'es muy malumorada'),
+(8, 'cachita', 12, 'doberman', 'bueno', 10, 10, 'ninguna', 'lastimadura en la nariz');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `reporte_medico`
+--
+
+CREATE TABLE `reporte_medico` (
+  `id` int(11) NOT NULL,
+  `idMascota` int(11) NOT NULL,
+  `descripcion` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -121,7 +164,10 @@ CREATE TABLE `reservas` (
 --
 
 INSERT INTO `reservas` (`id`, `idMascota`, `fechaEntrada`, `fechaSalida`) VALUES
-(1, 1, '2024-10-06', '2024-10-09');
+(1, 1, '2024-10-06', '2024-10-09'),
+(2, 1, '2024-07-10', '2024-07-17'),
+(3, 3, '2024-04-06', '2024-04-10'),
+(4, 2, '2024-10-10', '2024-10-11');
 
 -- --------------------------------------------------------
 
@@ -158,6 +204,26 @@ CREATE TABLE `tratamientos` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `turnos`
+--
+
+CREATE TABLE `turnos` (
+  `idTurno` int(11) NOT NULL,
+  `idMascota` int(11) NOT NULL,
+  `fechaTurno` date NOT NULL,
+  `servicio` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `turnos`
+--
+
+INSERT INTO `turnos` (`idTurno`, `idMascota`, `fechaTurno`, `servicio`) VALUES
+(1, 1, '2024-10-14', 'Vacunación');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `usuario`
 --
 
@@ -175,8 +241,12 @@ CREATE TABLE `usuario` (
 
 INSERT INTO `usuario` (`mail`, `contraseña`, `rol`, `id`, `nombre`) VALUES
 ('hola@gmail.com', '1234', 'empleado', 1, 'Juan'),
-('admin@gmail.com', 'admin123', 'administrador', 14, 'Melina'),
-('marcos@gmail.com', 'marcos123', 'empleado', 16, 'Marcos');
+('marcos@gmail.com', 'marcos123', 'empleado', 16, 'Marcos'),
+('empleada@gmail.com', 'empleada12', 'empleado', 18, 'Melina'),
+('admin@gmail.com', 'admin123', 'administrador', 20, 'Melina'),
+('', '', '', 21, ''),
+('empleado1@gmail.com', 'empleado1', 'empleado', 22, 'Lionel'),
+('veterin@gmail.com', 'veterinaria', 'veterinario', 23, 'Laura');
 
 -- --------------------------------------------------------
 
@@ -204,6 +274,13 @@ ALTER TABLE `clientes`
   ADD UNIQUE KEY `correo` (`correo`);
 
 --
+-- Indices de la tabla `consulta`
+--
+ALTER TABLE `consulta`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idMascota` (`idMascota`);
+
+--
 -- Indices de la tabla `consultas`
 --
 ALTER TABLE `consultas`
@@ -219,13 +296,21 @@ ALTER TABLE `empleados`
 -- Indices de la tabla `facturas`
 --
 ALTER TABLE `facturas`
-  ADD PRIMARY KEY (`idFactura`);
+  ADD PRIMARY KEY (`idFactura`),
+  ADD KEY `idMascota` (`idMascota`);
 
 --
 -- Indices de la tabla `mascotas`
 --
 ALTER TABLE `mascotas`
   ADD PRIMARY KEY (`idMascota`);
+
+--
+-- Indices de la tabla `reporte_medico`
+--
+ALTER TABLE `reporte_medico`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idMascota` (`idMascota`);
 
 --
 -- Indices de la tabla `reservas`
@@ -245,6 +330,13 @@ ALTER TABLE `servicios`
 --
 ALTER TABLE `tratamientos`
   ADD PRIMARY KEY (`idTratamiento`);
+
+--
+-- Indices de la tabla `turnos`
+--
+ALTER TABLE `turnos`
+  ADD PRIMARY KEY (`idTurno`),
+  ADD KEY `idMascota` (`idMascota`);
 
 --
 -- Indices de la tabla `usuario`
@@ -269,6 +361,12 @@ ALTER TABLE `clientes`
   MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `consulta`
+--
+ALTER TABLE `consulta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `consultas`
 --
 ALTER TABLE `consultas`
@@ -284,19 +382,25 @@ ALTER TABLE `empleados`
 -- AUTO_INCREMENT de la tabla `facturas`
 --
 ALTER TABLE `facturas`
-  MODIFY `idFactura` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idFactura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `mascotas`
 --
 ALTER TABLE `mascotas`
-  MODIFY `idMascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idMascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de la tabla `reporte_medico`
+--
+ALTER TABLE `reporte_medico`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `reservas`
 --
 ALTER TABLE `reservas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `servicios`
@@ -311,10 +415,16 @@ ALTER TABLE `tratamientos`
   MODIFY `idTratamiento` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `turnos`
+--
+ALTER TABLE `turnos`
+  MODIFY `idTurno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `veterinarios`
@@ -327,10 +437,34 @@ ALTER TABLE `veterinarios`
 --
 
 --
+-- Filtros para la tabla `consulta`
+--
+ALTER TABLE `consulta`
+  ADD CONSTRAINT `consulta_ibfk_1` FOREIGN KEY (`idMascota`) REFERENCES `mascotas` (`idMascota`);
+
+--
+-- Filtros para la tabla `facturas`
+--
+ALTER TABLE `facturas`
+  ADD CONSTRAINT `facturas_ibfk_1` FOREIGN KEY (`idMascota`) REFERENCES `mascotas` (`idMascota`);
+
+--
+-- Filtros para la tabla `reporte_medico`
+--
+ALTER TABLE `reporte_medico`
+  ADD CONSTRAINT `reporte_medico_ibfk_1` FOREIGN KEY (`idMascota`) REFERENCES `mascotas` (`idMascota`);
+
+--
 -- Filtros para la tabla `reservas`
 --
 ALTER TABLE `reservas`
   ADD CONSTRAINT `fk_idMascota` FOREIGN KEY (`idMascota`) REFERENCES `mascotas` (`idMascota`);
+
+--
+-- Filtros para la tabla `turnos`
+--
+ALTER TABLE `turnos`
+  ADD CONSTRAINT `turnos_ibfk_1` FOREIGN KEY (`idMascota`) REFERENCES `mascotas` (`idMascota`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

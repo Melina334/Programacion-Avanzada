@@ -5,131 +5,131 @@ import DLL.empleadoController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.List;
 
 public class GenerarFactura extends JFrame {
-    private static final long serialVersionUID = 1L;
 
-    private JComboBox<Integer> comboBoxMascotas; // ComboBox que muestra solo IDs de las mascotas
-    private JTextField servicioField; // Campo de texto para ingresar el servicio
-    private JTextField montoField; // Campo de texto para ingresar el monto
+    private JComboBox<String> comboMascotas;
+    private JTextField fechaField;
+    private JTextField totalField;
+    private JComboBox<String> estadoCombo;
+    private JTextField servicioField;  // Campo para ingresar el servicio
 
     public GenerarFactura() {
+        // Configuración básica del JFrame
         setTitle("Generar Factura");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 450, 300);
+        setSize(444, 345);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new GridLayout(6, 2));  // Cambiar a 6 filas para incluir el servicio
 
-        // Configurar el panel principal
-        JPanel contentPane = new JPanel();
-        contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        contentPane.setLayout(null);
-        setContentPane(contentPane);
-
-        // Etiqueta para seleccionar la mascota
-        JLabel labelSeleccionarMascota = new JLabel("Seleccionar Mascota (ID):");
-        labelSeleccionarMascota.setBounds(30, 50, 150, 25);
-        contentPane.add(labelSeleccionarMascota);
-
-        // ComboBox para seleccionar la mascota
-        comboBoxMascotas = new JComboBox<>();
-        comboBoxMascotas.setBounds(180, 50, 200, 25);
-        contentPane.add(comboBoxMascotas);
-
-        // Cargar las mascotas en el ComboBox
-        cargarMascotas();
-
-        // Campo para ingresar el servicio realizado
-        JLabel labelServicio = new JLabel("Servicio Realizado:");
-        labelServicio.setBounds(30, 100, 150, 25);
-        contentPane.add(labelServicio);
-
-        servicioField = new JTextField();
-        servicioField.setBounds(180, 100, 200, 25);
-        contentPane.add(servicioField);
-
-        // Campo para ingresar el monto de la factura
-        JLabel labelMonto = new JLabel("Monto:");
-        labelMonto.setBounds(30, 150, 150, 25);
-        contentPane.add(labelMonto);
-
-        montoField = new JTextField();
-        montoField.setBounds(180, 150, 200, 25);
-        contentPane.add(montoField);
-
-        // Botón para generar la factura
-        JButton btnGenerarFactura = new JButton("Generar Factura");
-        btnGenerarFactura.setBounds(150, 200, 150, 30);
-        btnGenerarFactura.addActionListener(e -> generarFactura());
-        contentPane.add(btnGenerarFactura);
-    }
-
-    /**
-     * Método para cargar los IDs de las mascotas en el ComboBox desde la base de datos.
-     */
-    private void cargarMascotas() {
-        try {
-            List<mascota> listaMascotas = empleadoController.obtenerMascotas(); // Obtener lista de mascotas
-            comboBoxMascotas.removeAllItems(); // Limpiar el ComboBox antes de cargar los datos
-
-            for (mascota m : listaMascotas) {
-                comboBoxMascotas.addItem(m.getIdMascota()); // Agregar solo el ID de la mascota
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error al cargar las mascotas: " + e.getMessage());
+        // Obtener la lista de mascotas
+        List<mascota> mascotas = empleadoController.obtenerMascotas();
+        DefaultComboBoxModel<String> mascotaModel = new DefaultComboBoxModel<>();
+        for (mascota m : mascotas) {
+            mascotaModel.addElement(m.getNombre());
         }
+
+        // Crear los componentes del formulario
+        comboMascotas = new JComboBox<>(mascotaModel);
+        fechaField = new JTextField("YYYY-MM-DD");  // Formato de fecha
+        totalField = new JTextField();
+        estadoCombo = new JComboBox<>(new String[]{"pendiente", "pagado", "anulado"});
+        servicioField = new JTextField();  // Campo para ingresar el servicio
+
+        // Crear botón para generar la factura
+        JButton generarButton = new JButton("Generar Factura");
+        generarButton.setBackground(new Color(0, 255, 255));
+        generarButton.setForeground(new Color(255, 0, 255));
+        generarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generarFactura();
+            }
+        });
+
+        // Agregar los componentes al JFrame
+        JLabel label = new JLabel("Seleccionar Mascota:");
+        label.setForeground(new Color(255, 0, 255));
+        getContentPane().add(label);
+        getContentPane().add(comboMascotas);
+        JLabel label_1 = new JLabel("Fecha (YYYY-MM-DD):");
+        label_1.setForeground(new Color(255, 0, 255));
+        getContentPane().add(label_1);
+        getContentPane().add(fechaField);
+        JLabel label_2 = new JLabel("Total:");
+        label_2.setForeground(new Color(255, 0, 255));
+        getContentPane().add(label_2);
+        getContentPane().add(totalField);
+        JLabel label_3 = new JLabel("Estado:");
+        label_3.setForeground(new Color(255, 0, 255));
+        getContentPane().add(label_3);
+        getContentPane().add(estadoCombo);
+        JLabel label_4 = new JLabel("Servicio:");
+        label_4.setForeground(new Color(255, 0, 255));
+        getContentPane().add(label_4);  // Etiqueta para el servicio
+        getContentPane().add(servicioField);  // Campo para ingresar el servicio
+        
+        getContentPane().add(generarButton);
     }
 
-    /**
-     * Método para generar una factura con los datos ingresados por el usuario.
-     */
     private void generarFactura() {
-        Integer idMascota = (Integer) comboBoxMascotas.getSelectedItem(); // Obtener el ID de la mascota seleccionada
-        if (idMascota == null) {
-            JOptionPane.showMessageDialog(this, "Por favor selecciona una mascota.");
+        // Validación de los datos del formulario
+        if (comboMascotas.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una mascota.");
             return;
         }
 
-        String servicio = servicioField.getText().trim(); // Obtener y limpiar el servicio ingresado
-        if (servicio.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor ingresa un servicio.");
+        String mascotaSeleccionada = (String) comboMascotas.getSelectedItem();
+        String fechaString = fechaField.getText();
+        String servicio = servicioField.getText();
+        
+        // Validar que la fecha tiene el formato correcto (YYYY-MM-DD)
+        if (!fechaString.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            JOptionPane.showMessageDialog(this, "Fecha inválida. El formato debe ser YYYY-MM-DD.");
             return;
         }
 
-        double monto;
+        double total = 0;
         try {
-            monto = Double.parseDouble(montoField.getText().trim()); // Validar y convertir el monto
-            if (monto <= 0) {
-                throw new NumberFormatException("El monto debe ser mayor a cero.");
-            }
+            total = Double.parseDouble(totalField.getText());
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Por favor ingresa un monto válido.");
+            JOptionPane.showMessageDialog(this, "El total debe ser un número válido.");
             return;
         }
 
-        // Llamar al método del controlador para generar la factura
-        boolean facturaGenerada = empleadoController.generarFactura(idMascota, servicio, monto);
-        if (facturaGenerada) {
+        String estado = (String) estadoCombo.getSelectedItem();
+
+        // Validar que el campo servicio no esté vacío
+        if (servicio.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El campo 'Servicio' no puede estar vacío.");
+            return;
+        }
+
+        // Convertir fecha a tipo Date
+        java.sql.Date fecha = java.sql.Date.valueOf(fechaString);
+
+        // Obtener el ID de la mascota seleccionada
+        List<mascota> mascotas = empleadoController.obtenerMascotas();
+        int idMascota = 0;
+        for (mascota m : mascotas) {
+            if (m.getNombre().equals(mascotaSeleccionada)) {
+                idMascota = m.getIdMascota();
+                break;
+            }
+        }
+
+        // Llamar al método generarFactura de empleadoController, ahora incluyendo el servicio
+        boolean exito = empleadoController.generarFactura(idMascota, fecha, total, estado, servicio);
+        if (exito) {
             JOptionPane.showMessageDialog(this, "Factura generada con éxito.");
-            servicioField.setText("");
-            montoField.setText("");
+            dispose();  // Cerrar la ventana de generar factura
         } else {
             JOptionPane.showMessageDialog(this, "Error al generar la factura.");
         }
     }
 
-    /**
-     * Método principal para ejecutar la aplicación.
-     */
     public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-                GenerarFactura frame = new GenerarFactura();
-                frame.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        SwingUtilities.invokeLater(() -> new GenerarFactura().setVisible(true));
     }
 }
-

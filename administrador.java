@@ -11,6 +11,7 @@ public class administrador extends usuario {
 		super(string, string2, string3, string4);
 	}
 
+	/*
 	public void menu(usuario usuario) {
 		int opcion;
 		do {
@@ -35,5 +36,5 @@ public class administrador extends usuario {
 			}
 		} while (opcion != 0);
 	}
-
+*/
 }

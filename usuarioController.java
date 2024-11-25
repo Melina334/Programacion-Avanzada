@@ -114,6 +114,7 @@ public class usuarioController {
 	    try (PreparedStatement statement = con.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
 	        while (resultSet.next()) {
 	            usuario usuario = new usuario(
+	            	
 	                resultSet.getString("mail"),
 	                resultSet.getString("contraseña"),
 	                resultSet.getString("rol"),
@@ -152,6 +153,7 @@ public class usuarioController {
 	        try (ResultSet resultSet = statement.executeQuery()) {
 	            if (resultSet.next()) {
 	                usuarioEncontrado = new usuario(
+	                
 	                    resultSet.getString("mail"),
 	                    resultSet.getString("contraseña"),
 	                    resultSet.getString("rol"),
@@ -166,4 +168,26 @@ public class usuarioController {
 
 	    return usuarioEncontrado;
 	}
+	public static ArrayList<usuario> obtenerUsuarios() {
+	    ArrayList<usuario> lista = new ArrayList<>();
+	    String sql = "SELECT * FROM usuario";
+
+	    try (PreparedStatement statement = con.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
+	        while (resultSet.next()) {
+	            usuario u = new usuario(
+
+	                resultSet.getString("mail"),
+	                resultSet.getString("contraseña"),
+	                resultSet.getString("rol"),
+	                resultSet.getString("nombre")
+	            );
+	            lista.add(u);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        JOptionPane.showMessageDialog(null, "Error al obtener usuarios: " + e.getMessage());
+	    }
+	    return lista;
+	}
+
 }

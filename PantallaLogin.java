@@ -34,6 +34,7 @@ public class PantallaLogin extends JFrame {
      * Create the frame.
      */
     public PantallaLogin() {
+    	setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\daver\\Downloads\\images (1).jpg"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         contentPane = new JPanel();
@@ -71,6 +72,11 @@ public class PantallaLogin extends JFrame {
         btnIngresar.addActionListener(e -> autenticarUsuario());
         btnIngresar.setBounds(109, 174, 89, 23);
         contentPane.add(btnIngresar);
+        
+        JLabel lblNewLabel = new JLabel("New label");
+        lblNewLabel.setIcon(new ImageIcon("C:\\Users\\daver\\Downloads\\images (1).jpg"));
+        lblNewLabel.setBounds(264, 67, 139, 130);
+        contentPane.add(lblNewLabel);
     }
 
     /**

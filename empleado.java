@@ -11,7 +11,7 @@ public class empleado extends usuario {
 		// TODO Auto-generated constructor stub
 	}
 
-	 // Método `menu()` ya no es necesario y se puede eliminar o comentar.
+	 // 
     /*
     public void menu() {
         String[] opciones = { "Registrar mascota", "Ver mascotas registradas", "Generar factura",
